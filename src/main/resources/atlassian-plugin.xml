@@ -1,0 +1,47 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">com/tiobe/plugins/images/pluginIcon.png</param>
+        <param name="plugin-logo">com/tiobe/plugins/images/pluginLogo.png</param>
+    </plugin-info>
+
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="TICS Task Props" location="com.tiobe.plugins.tics"/>
+    <!-- add our web resources -->
+    <web-resource key="tics-bamboo-plugin-resources" name="tics-bamboo-plugin Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+
+        <resource type="download" name="tics-bamboo-plugin.css" location="/com/tiobe/plugins/css/tics-bamboo-plugin.css"/>
+        <resource type="download" name="tics-bamboo-plugin.js" location="/com/tiobe/plugins/js/tics-bamboo-plugin.js"/>
+        <resource type="download" name="images/" location="/com/tiobe/plugins/images"/>
+
+        <context>tics-bamboo-plugin</context>
+    </web-resource>
+    <taskType name="TICS Quality Analysis" class="com.tiobe.plugins.bamboo.tasks.TicsAnalysisTask" key="analysis">
+        <description>TICS Quality Analysis</description>
+        <!-- Categories available in 3.1: "builder", "test" and "deployment"
+        <category name=""/>
+        -->
+        <configuration class="com.tiobe.plugins.bamboo.tasks.TicsAnalysisTaskConfigurator"/>
+        <component-import key="i18nResolver" interface="com.atlassian.sal.api.message.I18nResolver" />
+        <resource type="freemarker" name="edit" location="com/tiobe/plugins/tasks/editTICSAnalysisTask.ftl"/>
+        <resource type="download" name="icon" location="/com/tiobe/plugins/images/tiobe.ico"/>
+    </taskType>
+    <taskType name="TICS Quality Gate" class="com.tiobe.plugins.bamboo.tasks.TicsQualityGateTask" key="qualitygate">
+        <description>TICS Quality Analysis</description>
+        <!-- Categories available in 3.1: "builder", "test" and "deployment"
+        <category name=""/>
+        -->
+        <configuration class="com.tiobe.plugins.bamboo.tasks.TicsQualityGateTaskConfigurator"/>
+        <resource type="freemarker" name="edit" location="com/tiobe/plugins/tasks/editTICSQualityGateTask.ftl"/>
+        <resource type="download" name="icon" location="tiobe.ico"/>
+    </taskType>
+    <web-panel key="qualityGatePanel" location="chainresult.summary.right">
+        <context-provider class="com.tiobe.plugins.bamboo.results.QualityGateResultContextProvider"/>
+        <resource name="view" type="freemarker" location="com/tiobe/plugins/results/viewQualityGateSummary.ftl"/>
+    </web-panel>
+
+</atlassian-plugin>
