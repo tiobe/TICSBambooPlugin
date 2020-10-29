@@ -14,7 +14,7 @@ public class TicsQualityGateResult {
         return passed;
     }
 
-    public void setPassed(boolean passed) {
+    public void setPassed(final boolean passed) {
         this.passed = passed;
     }
 
@@ -22,7 +22,7 @@ public class TicsQualityGateResult {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(final String message) {
         this.message = message;
     }
 
@@ -30,7 +30,7 @@ public class TicsQualityGateResult {
         return gates;
     }
 
-    public void setGates(List<QualityGate> gates) {
+    public void setGates(final List<QualityGate> gates) {
         this.gates = gates;
     }
 
@@ -38,7 +38,7 @@ public class TicsQualityGateResult {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(final String url) {
         this.url = url;
     }
 

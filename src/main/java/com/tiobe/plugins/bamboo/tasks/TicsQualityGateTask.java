@@ -1,7 +1,11 @@
 package com.tiobe.plugins.bamboo.tasks;
 
 import com.atlassian.bamboo.build.logger.BuildLogger;
-import com.atlassian.bamboo.task.*;
+import com.atlassian.bamboo.task.TaskContext;
+import com.atlassian.bamboo.task.TaskException;
+import com.atlassian.bamboo.task.TaskResult;
+import com.atlassian.bamboo.task.TaskResultBuilder;
+import com.atlassian.bamboo.task.TaskType;
 import com.atlassian.bamboo.v2.build.CurrentBuildResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -26,10 +30,10 @@ public class TicsQualityGateTask implements TaskType {
 
     @NotNull
     @Override
-    public TaskResult execute(@NotNull TaskContext taskContext) throws TaskException {
+    public TaskResult execute(@NotNull final TaskContext taskContext) throws TaskException {
 
-        CurrentBuildResult buildResult = taskContext.getBuildContext().getBuildResult();
-        TaskResult taskResult;
+        final CurrentBuildResult buildResult = taskContext.getBuildContext().getBuildResult();
+        final TaskResult taskResult;
 
         final BuildLogger buildLogger = taskContext.getBuildLogger();
 
@@ -39,26 +43,26 @@ public class TicsQualityGateTask implements TaskType {
         final String userName = taskContext.getConfigurationMap().get("userName");
         final String password = taskContext.getConfigurationMap().get("password");
 
-        String qualityGateAPI = viewerApi + "/api/public/v1/QualityGateStatus?"
+        final String qualityGateAPI = viewerApi + "/api/public/v1/QualityGateStatus?"
                 + "project=" + projectName
                 + "&branch=" + branchName;
 
         buildLogger.addBuildLogEntry("Quality gate request sent to : " + qualityGateAPI);
 
-        CredentialsProvider provider = new BasicCredentialsProvider();
+        final CredentialsProvider provider = new BasicCredentialsProvider();
         provider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName, password));
 
-        String responseBody;
+        final String responseBody;
         try (CloseableHttpClient client = HttpClientBuilder.create()
                 .setDefaultCredentialsProvider(provider)
                 .build()) {
 
 
-            HttpGet qualityGateRequest = new HttpGet(qualityGateAPI);
-            CloseableHttpResponse response = client.execute(qualityGateRequest);
+            final HttpGet qualityGateRequest = new HttpGet(qualityGateAPI);
+            final CloseableHttpResponse response = client.execute(qualityGateRequest);
             responseBody = EntityUtils.toString(response.getEntity(), "UTF-8");
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException("Error while performing API request to " + qualityGateAPI + ": \n " + e.toString());
         }
 
@@ -70,8 +74,8 @@ public class TicsQualityGateTask implements TaskType {
         logger.debug("Received Quality Gate Result: \n" + responseBody);
 
         try {
-            Gson gson = new Gson();
-            TicsQualityGateResult qualityGateResult = gson.fromJson(responseBody, TicsQualityGateResult.class);
+            final Gson gson = new Gson();
+            final TicsQualityGateResult qualityGateResult = gson.fromJson(responseBody, TicsQualityGateResult.class);
 
             if (qualityGateResult.isPassed()) {
                 buildLogger.addBuildLogEntry("Quality Gate Passed!");
@@ -80,7 +84,7 @@ public class TicsQualityGateTask implements TaskType {
                 buildLogger.addBuildLogEntry("Quality Gate Failed!");
                 taskResult = TaskResultBuilder.newBuilder(taskContext).failed().build();
             }
-        } catch (JsonSyntaxException e) {
+        } catch (final JsonSyntaxException e) {
             throw new RuntimeException("Failed to parse server response. \n " + responseBody, e);
         }
         return taskResult;

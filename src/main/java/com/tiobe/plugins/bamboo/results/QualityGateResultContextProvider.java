@@ -17,33 +17,33 @@ public class QualityGateResultContextProvider implements ContextProvider {
     private static final Logger logger = Logger.getLogger(QualityGateResultContextProvider.class);
 
     @Override
-    public void init(Map<String, String> map) throws PluginParseException {
+    public void init(final Map<String, String> map) throws PluginParseException {
 
     }
 
     @Override
-    public Map<String, Object> getContextMap(Map<String, Object> context) {
+    public Map<String, Object> getContextMap(final Map<String, Object> context) {
 
         String qualityGateResult = "";
 
         if (context.containsKey("resultSummary")) {
-            ChainResultsSummary chainResultSummary = (ChainResultsSummary) context.get("resultSummary");
-            List<ChainStageResult> stageResults = chainResultSummary.getStageResults();
+            final ChainResultsSummary chainResultSummary = (ChainResultsSummary) context.get("resultSummary");
+            final List<ChainStageResult> stageResults = chainResultSummary.getStageResults();
             for (ChainStageResult stageResult : stageResults) {
 
-                Set<BuildResultsSummary> buildResults = stageResult.getBuildResults();
+                final Set<BuildResultsSummary> buildResults = stageResult.getBuildResults();
                 for (BuildResultsSummary summary : buildResults) {
                     if (summary.getCustomBuildData().containsKey("ticsQualityGateResult")) {
                         qualityGateResult = summary.getCustomBuildData().get("ticsQualityGateResult");
 
-                        Gson gson = new Gson();
+                        final Gson gson = new Gson();
                         try {
-                            TicsQualityGateResult result = gson.fromJson(qualityGateResult, TicsQualityGateResult.class);
+                            final TicsQualityGateResult result = gson.fromJson(qualityGateResult, TicsQualityGateResult.class);
                             result.setUrl(summary.getCustomBuildData().getOrDefault("viewerApi", "") + "/" + result.getUrl());
                             context.put("ticsQualityGateResult", result);
                             context.put("projectName", summary.getCustomBuildData().getOrDefault("projectName", ""));
                             context.put("branchName", summary.getCustomBuildData().getOrDefault("branchName", ""));
-                        } catch (JsonSyntaxException e) {
+                        } catch (final JsonSyntaxException e) {
                             throw new RuntimeException("Failed to parse server response: " + qualityGateResult, e);
                         }
 

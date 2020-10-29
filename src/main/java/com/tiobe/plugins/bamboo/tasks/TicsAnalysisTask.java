@@ -2,26 +2,34 @@ package com.tiobe.plugins.bamboo.tasks;
 
 import com.atlassian.bamboo.build.logger.BuildLogger;
 import com.atlassian.bamboo.process.ProcessService;
-import com.atlassian.bamboo.task.*;
+import com.atlassian.bamboo.task.TaskContext;
+import com.atlassian.bamboo.task.TaskException;
+import com.atlassian.bamboo.task.TaskResult;
+import com.atlassian.bamboo.task.TaskResultBuilder;
+import com.atlassian.bamboo.task.TaskType;
 import com.atlassian.bamboo.process.ExternalProcessBuilder;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TicsAnalysisTask implements TaskType {
     @ComponentImport
     private final ProcessService processService;
 
-    public TicsAnalysisTask(ProcessService processService) {
+    public TicsAnalysisTask(final ProcessService processService) {
         this.processService = processService;
     }
 
     @NotNull
     @Override
-    public TaskResult execute(@NotNull TaskContext taskContext) throws TaskException {
+    public TaskResult execute(@NotNull final TaskContext taskContext) throws TaskException {
 
         final BuildLogger buildLogger = taskContext.getBuildLogger();
 
@@ -31,14 +39,14 @@ public class TicsAnalysisTask implements TaskType {
         final String envVars = taskContext.getConfigurationMap().get("envVars");
 
         //set FileServer path
-        Map<String, String> envMap = new HashMap<>();
+        final Map<String, String> envMap = new HashMap<>();
         if (!StringUtils.isEmpty(fileServer)) {
             envMap.put("TICS", fileServer);
         }
 
         //set env vars
         if (envVars != null && !envVars.isEmpty()) {
-            Map<String, String> intermediate = Arrays.stream(envVars.split("\n"))
+            final Map<String, String> intermediate = Arrays.stream(envVars.split("\n"))
                     .map(String::trim)
                     .map((s) -> s.split("=", 2))
                     .filter(ar -> ar.length >= 2)
@@ -50,7 +58,7 @@ public class TicsAnalysisTask implements TaskType {
         //If branchDir specified, invoke TICSMaintenance to create a new branch
         if (!StringUtils.isEmpty(branchDir) && !StringUtils.isWhitespace(branchDir)) {
             buildLogger.addBuildLogEntry("Invoking TICSMaintenance with branchDir " + branchDir);
-            ExternalProcessBuilder ticsMaintenanceProcessBuilder = new ExternalProcessBuilder()
+            final ExternalProcessBuilder ticsMaintenanceProcessBuilder = new ExternalProcessBuilder()
                     .workingDirectory(taskContext.getWorkingDirectory())
                     .env(envMap)
                     .path(buildServer);
@@ -59,7 +67,7 @@ public class TicsAnalysisTask implements TaskType {
         }
 
         //run TICSQServer analysis
-        ExternalProcessBuilder ticsProcessBuilder = new ExternalProcessBuilder()
+        final ExternalProcessBuilder ticsProcessBuilder = new ExternalProcessBuilder()
                 .workingDirectory(taskContext.getWorkingDirectory())
                 .path(buildServer)
                 .env(envMap);
@@ -68,9 +76,9 @@ public class TicsAnalysisTask implements TaskType {
 
     }
 
-    public TaskResult executeTICSMaintenance(ExternalProcessBuilder processBuilder, TaskContext taskContext) {
+    public TaskResult executeTICSMaintenance(final ExternalProcessBuilder processBuilder, final TaskContext taskContext) {
 
-        List<String> ticsMaintenanceCommand = new ArrayList<>();
+        final List<String> ticsMaintenanceCommand = new ArrayList<>();
         ticsMaintenanceCommand.addAll(Arrays.asList("TICSMaintenance", "-project", taskContext.getConfigurationMap().get("projectName")));
 
         ticsMaintenanceCommand.add("-branchName");
@@ -86,12 +94,12 @@ public class TicsAnalysisTask implements TaskType {
                 .build();
     }
 
-    public TaskResult executeTICSQServer(ExternalProcessBuilder processBuilder, TaskContext taskContext) {
+    public TaskResult executeTICSQServer(final ExternalProcessBuilder processBuilder, final TaskContext taskContext) {
         final BuildLogger buildLogger = taskContext.getBuildLogger();
         taskContext.getBuildLogger().addBuildLogEntry("ProcessBuilder path : " + processBuilder.getPaths());
         buildLogger.addBuildLogEntry("ProcessBuilder env : " + processBuilder.getEnv());
 
-        List<String> ticsCommand = new ArrayList<>();
+        final List<String> ticsCommand = new ArrayList<>();
         ticsCommand.addAll(Arrays.asList("TICSQServer", "-project", taskContext.getConfigurationMap().get("projectName")));
 
         ticsCommand.add("-branchName");
@@ -105,7 +113,7 @@ public class TicsAnalysisTask implements TaskType {
             ticsCommand.add(tmpDirLoc);
         }
 
-        String extraArgs = taskContext.getConfigurationMap().getOrDefault("extraArgs", "");
+        final String extraArgs = taskContext.getConfigurationMap().getOrDefault("extraArgs", "");
         if (!StringUtils.isEmpty(extraArgs)) {
             ticsCommand.addAll(Arrays.asList(extraArgs.split(" ")));
         }

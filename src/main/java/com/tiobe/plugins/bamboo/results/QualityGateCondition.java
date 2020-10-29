@@ -8,7 +8,7 @@ public class QualityGateCondition {
         return passed;
     }
 
-    public void setPassed(boolean passed) {
+    public void setPassed(final boolean passed) {
         this.passed = passed;
     }
 
@@ -16,7 +16,7 @@ public class QualityGateCondition {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(final String message) {
         this.message = message;
     }
 

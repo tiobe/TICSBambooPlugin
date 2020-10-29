@@ -1,14 +1,12 @@
 package com.tiobe.plugins.bamboo.tasks;
 
-import com.atlassian.bamboo.utils.i18n.BambooTextProvider;
 import com.atlassian.bamboo.utils.i18n.I18nBean;
 import com.atlassian.bamboo.utils.i18n.I18nBeanFactory;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
-import com.atlassian.sal.api.message.I18nResolver;
-import org.apache.struts2.components.I18n;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.atlassian.bamboo.task.*;
+import com.atlassian.bamboo.task.AbstractTaskConfigurator;
+import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
 import com.atlassian.bamboo.collections.ActionParametersMap;
 
@@ -24,7 +22,7 @@ public class TicsAnalysisTaskConfigurator extends AbstractTaskConfigurator {
             "tmpDirEnabled", "tmpDirLoc", "extraArgs", "envVars", "advancedOpts");
     private final I18nBean i18nBean;
 
-    TicsAnalysisTaskConfigurator(@ComponentImport I18nBeanFactory i18nBeanFactory) {
+    TicsAnalysisTaskConfigurator(@ComponentImport final I18nBeanFactory i18nBeanFactory) {
         this.i18nBean = i18nBeanFactory.getI18nBean();
     }
 

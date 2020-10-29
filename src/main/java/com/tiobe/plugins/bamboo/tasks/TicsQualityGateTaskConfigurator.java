@@ -19,14 +19,14 @@ public class TicsQualityGateTaskConfigurator extends AbstractTaskConfigurator {
     private final ImmutableList<String> REQUIRED_FIELDS = ImmutableList.of("projectName", "branchName", "viewerApi");
     private final I18nBean i18nBean;
 
-    TicsQualityGateTaskConfigurator(@ComponentImport I18nBeanFactory i18nBeanFactory) {
+    TicsQualityGateTaskConfigurator(@ComponentImport final I18nBeanFactory i18nBeanFactory) {
         this.i18nBean = i18nBeanFactory.getI18nBean();
     }
 
     @NotNull
     @Override
-    public Map<String, String> generateTaskConfigMap(@NotNull ActionParametersMap params, @Nullable TaskDefinition previousTaskDefinition) {
-        Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
+    public Map<String, String> generateTaskConfigMap(@NotNull final ActionParametersMap params, @Nullable final TaskDefinition previousTaskDefinition) {
+        final Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
         for (String key : PROP_KEYS) {
             config.put(key, params.getString(key));
         }
@@ -34,7 +34,7 @@ public class TicsQualityGateTaskConfigurator extends AbstractTaskConfigurator {
     }
 
     @Override
-    public void validate(@NotNull ActionParametersMap params, @NotNull ErrorCollection errorCollection) {
+    public void validate(@NotNull final ActionParametersMap params, @NotNull final ErrorCollection errorCollection) {
         super.validate(params, errorCollection);
         for (String requiredStr : REQUIRED_FIELDS) {
             if (StringUtils.isBlank(params.getString(requiredStr))) {
@@ -44,12 +44,12 @@ public class TicsQualityGateTaskConfigurator extends AbstractTaskConfigurator {
     }
 
     @Override
-    public void populateContextForCreate(@NotNull Map<String, Object> context) {
+    public void populateContextForCreate(@NotNull final Map<String, Object> context) {
         super.populateContextForCreate(context);
     }
 
     @Override
-    public void populateContextForEdit(@NotNull Map<String, Object> context, @NotNull TaskDefinition taskDefinition) {
+    public void populateContextForEdit(@NotNull final Map<String, Object> context, @NotNull final TaskDefinition taskDefinition) {
         super.populateContextForEdit(context, taskDefinition);
         for (String key : PROP_KEYS) {
             context.put(key, taskDefinition.getConfiguration().get(key));

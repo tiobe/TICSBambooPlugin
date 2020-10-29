@@ -11,7 +11,7 @@ public class QualityGate {
         return passed;
     }
 
-    public void setPassed(boolean passed) {
+    public void setPassed(final boolean passed) {
         this.passed = passed;
     }
 
@@ -19,7 +19,7 @@ public class QualityGate {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -27,7 +27,7 @@ public class QualityGate {
         return conditions;
     }
 
-    public void setConditions(List<QualityGateCondition> conditions) {
+    public void setConditions(final List<QualityGateCondition> conditions) {
         this.conditions = conditions;
     }
 

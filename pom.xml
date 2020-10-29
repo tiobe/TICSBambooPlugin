@@ -146,6 +146,35 @@
                     <verbose>false</verbose>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-checkstyle-plugin</artifactId>
+	        <version>3.1.1</version>
+	        <configuration>
+	            <configLocation>config/checkstyle/checkstyle.xml</configLocation>
+	        </configuration>
+	        <executions>
+	            <execution>
+	                <goals>
+	                    <goal>check</goal>
+	                </goals>
+	            </execution>
+	        </executions>
+	    </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>tiobe</id>
+            <name>tiobe</name>
+            <url>https://artifacts.tiobe.com/repository/maven/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>tiobe</id>
+            <name>tiobe</name>
+            <url>https://artifacts.tiobe.com/repository/maven/</url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
