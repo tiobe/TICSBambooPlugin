@@ -31,13 +31,13 @@
         <resource type="download" name="icon" location="/com/tiobe/plugins/images/tiobe.ico"/>
     </taskType>
     <taskType name="TICS Quality Gate" class="com.tiobe.plugins.bamboo.tasks.TicsQualityGateTask" key="qualitygate">
-        <description>TICS Quality Analysis</description>
+        <description>TICS Quality Gating</description>
         <!-- Categories available in 3.1: "builder", "test" and "deployment"
         <category name=""/>
         -->
         <configuration class="com.tiobe.plugins.bamboo.tasks.TicsQualityGateTaskConfigurator"/>
         <resource type="freemarker" name="edit" location="com/tiobe/plugins/tasks/editTICSQualityGateTask.ftl"/>
-        <resource type="download" name="icon" location="tiobe.ico"/>
+        <resource type="download" name="icon" location="/com/tiobe/plugins/images/tiobe.ico"/>
     </taskType>
     <web-panel key="qualityGatePanel" location="chainresult.summary.right">
         <context-provider class="com.tiobe.plugins.bamboo.results.QualityGateResultContextProvider"/>
