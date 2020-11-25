@@ -3,8 +3,10 @@
         <description>${project.description}</description>
         <version>${project.version}</version>
         <vendor name="${project.organization.name}" url="${project.organization.url}" />
-        <param name="plugin-icon">com/tiobe/plugins/images/pluginIcon.png</param>
-        <param name="plugin-logo">com/tiobe/plugins/images/pluginLogo.png</param>
+        <param name="vendor-icon">com/tiobe/plugins/images/tiobe_logo.png</param>
+        <param name="vendor-logo">com/tiobe/plugins/images/tiobe_logo.ico</param>
+        <param name="plugin-icon">com/tiobe/plugins/images/tiobe.ico</param>
+        <param name="plugin-logo">com/tiobe/plugins/images/tiobe.ico</param>
     </plugin-info>
 
 
