@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tiobe</groupId>
-    <artifactId>tics-bamboo-plugin</artifactId>
+    <artifactId>TICSBamboo</artifactId>
     <version>${version}</version>
 
     <organization>
