@@ -15,8 +15,8 @@ jobs:
           distribution: temurin
           java-version: 8
           cache: maven
-      - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots package
+      - name: Build with Atlassian SDK
+        run: atlas-package -Dversion
       - name: Install and run TICSQSERVER
         env:
           TICSAUTHTOKEN: ${{ secrets.EBOIT_ANALYZER_TOKEN }}
