@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tiobe</groupId>
     <artifactId>TICSBamboo</artifactId>
-    <version>${version}</version>
+    <version>2020.4.0.41514</version>
 
     <organization>
         <name>TIOBE Software</name>
@@ -163,18 +163,4 @@
 	    </plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>tiobe</id>
-            <name>tiobe</name>
-            <url>https://artifacts.tiobe.com/repository/maven/</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>tiobe</id>
-            <name>tiobe</name>
-            <url>https://artifacts.tiobe.com/repository/maven/</url>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
